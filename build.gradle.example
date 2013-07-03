@@ -1,0 +1,45 @@
+defaultTasks 'hello'
+
+task hello << {
+	println 'Hello world!'
+}
+
+task intro(dependsOn:hello) << {
+	println 'intro'
+}
+
+
+4.times { counter ->
+	task "task$counter" << {
+		println "I'm task number $counter"
+	}
+}
+
+task0.dependsOn task2
+
+hello.doFirst {
+	println "hello.doFirst"
+}
+
+hello.doLast {
+	println "hello.doLast"
+}
+
+hello << {
+	println "hhhhhhello"
+	ext.prop1 = "PROP1"
+}
+
+hello << {
+	println "zellllllo"
+	println hello.prop1
+	println "*** $version"
+}
+
+
+
+gradle.taskGraph.whenReady {taskGraph ->
+    if (taskGraph.hasTask(hello)) {
+	version = '1.0'
+    }
+}
